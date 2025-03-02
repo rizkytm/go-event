@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"example.com/go-event/models"
+	"example.com/go-event/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,5 +40,10 @@ func login(context *gin.Context) {
 		context.JSON(http.StatusUnauthorized, gin.H{"message": "invalid credentials"})
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{"message": "login success"})
+	token, err := utils.GenerateToken(user.Email, user.ID)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "could not auth"})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{"message": "login success", "token": token})
 }
