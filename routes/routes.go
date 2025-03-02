@@ -6,6 +6,8 @@ import (
 )
 
 func RegisterRoutes(server *gin.Engine) {
+	server.GET("/", hello)
+
 	server.GET("/events", getEvents)
 	server.GET("/events/:id", getEvent)
 
